@@ -10,30 +10,28 @@ export class TasksController {
   constructor(private tasksService: TasksService) { }
 
   @Get()
-  getTasks(): Task[] {
-    return this.tasksService.getTasks();
+  getTasks(): Promise<Task[]> {
+    return this.tasksService.findAll();
   }
 
   @Get(':id')
-  getTask(@Param('id') id): Task {
-    return this.tasksService.getTask(Number(id));
+  getTask(@Param('id') id): Promise<Task> {
+    return this.tasksService.findOneById(id);
   }
 
   @Post()
-  createTask(@Body() task: CreateTaskDto): string {
-    console.log(task);
-    return 'Creating a task';
+  createTask(@Body() task: CreateTaskDto): Promise<Task> {
+    return this.tasksService.create(task);
   }
 
   @Delete(':id')
-  deleteTask(@Param('id') id): string {
-    return `Deleting task ${id}`;
+  deleteTask(@Param('id') id): Promise<any> {
+    return this.tasksService.delete(id);
   }
 
   @Put(':id')
-  updateTask(@Body() task: CreateTaskDto, @Param('id') id): string {
-    console.log(task);
-    return `Updating task ${id}`;
+  updateTask(@Body() task: CreateTaskDto, @Param('id') id): Promise<Task> {
+    return this.tasksService.update(task);
   }
 
 }
